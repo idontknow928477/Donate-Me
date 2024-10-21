@@ -1166,12 +1166,10 @@ function TP(...)
 						L_21_.Character.HumanoidRootPart.Died:Destroy()
 					end
 					repeat
-						task.wait()
+						wait(0.1)
+						L_21_.Character.Humanoid:ChangeState(15)
 						pcall(task.spawn, Use_Remote, "SetLastSpawnPoint", L_335_.Name)
 					until L_21_.Data.LastSpawnPoint.Value == L_335_.Name
-					pcall(function()
-						L_21_.Character.Humanoid:ChangeState(15)
-					end)
 					repeat
 						wait(.1)
 					until L_21_.Character.HumanoidRootPart.Parent
@@ -1758,19 +1756,17 @@ spawn(function()
 		end
 	end
 end)
-   
-  
-	task.spawn(function()
-		while wait() do
-			if setscriptable then
-				setscriptable(game.Players.Player, "SimulationRadius", true)
-			end
-			if sethiddenproperty then
-				sethiddenproperty(game.Players.Player, "SimulationRadius", math.huge)
-			end
+local player = game.Players.LocalPlayer
+task.spawn(function()
+	while wait() do
+		if setscriptable then
+			setscriptable(player, "SimulationRadius", true)
 		end
-	end)
-
+		if sethiddenproperty then
+			sethiddenproperty(player, "SimulationRadius", math.huge)
+		end
+	end
+end)
 function InMyNetWork(object)
 	if isnetworkowner then
 		return isnetworkowner(object)
@@ -1921,11 +1917,9 @@ spawn(function()
                                 NeedAttacking = true
                                 NameBoneMon = enemy.Name
                             until not getgenv().AutoBoneQuestion or not enemy.Parent or enemy.Humanoid.Health <= 0
-
-                            tweenPause = true
                             DamageAura = false
                         else
-                            tweenPause = false
+                            DamageAura = true
                         end
                     end
                 else
@@ -2019,11 +2013,9 @@ spawn(function()
                                           enemy.Humanoid.Health <= 0 or 
                                           not enemy.Parent or 
                                           not game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible
-
-                                    tweenPause = true
                                     DamageAura = false
                                 else
-                                    tweenPause = false
+                                    DamageAura = true
                                 end
                             end
                         end
@@ -2326,9 +2318,9 @@ spawn(function()
                                               enemy.Humanoid.Health <= 0 or 
                                               not enemy.Parent
                                         
-                                        tweenPause = true
+                                        NeedAttacking = false
                                     else
-                                        tweenPause = false
+                                        tweenPause = true
                                     end
                                 end
                             end
@@ -2414,9 +2406,9 @@ spawn(function()
                                     NeedAttacking = true
                                 end)
                             until getgenv().AutoRipChan == false or L_547_forvar1.Humanoid.Health <= 0
-                            tweenPause = true
+                           NeedAttacking = true
                         else
-                            tweenPause = false
+                            NeedAttacking = false
                         end
                     end
                 elseif game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("God's Chalice") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("God's Chalice") then
@@ -2483,9 +2475,9 @@ spawn(function()
                                 game:GetService("VirtualUser"):Button1Down(Vector2.new(1280, 670))
                                 enemy.HumanoidRootPart.Transparency = 1
                             until enemy.Humanoid.Health <= 0 or not getgenv().AutoFarmBossHallow
-                            tweenPause = true
+                           NeedAttacking = false
                         else
-                            tweenPause = false
+                            NeedAttacking = true
                         end
                     end
                 elseif game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Hallow Essence") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Hallow Essence") then
@@ -5260,12 +5252,8 @@ spawn(function()
                             StartMagnet = true
                             EquipWeapon(Selected_Weapons)
                         until not L_791_ or not L_791_.Parent or L_791_.Humanoid.Health == 0 or not getgenv().NormalFarm
-
-                        tweenPause = true
                     end
                 end
-            else
-                tweenPause = false
             end
         end)
     end
@@ -5298,9 +5286,9 @@ spawn(function()
                                 NeedAttacking = true
                                 TP(enemy.HumanoidRootPart.CFrame * CFrame.new(4, 25, 10))
                             until not getgenv().NearMob or not enemy.Parent or enemy.Humanoid.Health <= 0
-                            tweenPause = true
+                            NeedAttacking = false
                         else
-                            tweenPause = false
+                            NeedAttacking = true
                         end
                     end
                 end
@@ -5403,9 +5391,9 @@ spawn(function()
 									end
 									NeedAttacking = true
 								until not getgenv().AutoKata or not L_802_forvar1.Parent or L_802_forvar1.Humanoid.Health <= 0
-								tweenPause = true
+								NeedAttacking = false
 								else
-								tweenPause = false
+								NeedAttacking = true
 								wait(2) 
 							end
 						end
@@ -5443,9 +5431,8 @@ spawn(function()
 										NeedAttacking = true
 									until not getgenv().AutoKata or not L_807_forvar1.Parent or L_807_forvar1.Humanoid.Health <= 0 or game:GetService("Workspace").Map.CakeLoaf.BigMirror.Other.Transparency == 0 or game:GetService("ReplicatedStorage"):FindFirstChild("Cake Prince [Lv. 2300] [Raid Boss]") or game:GetService("Workspace").Enemies:FindFirstChild("Cake Prince [Lv. 2300] [Raid Boss]")
 									DamageAura = false
-									tweenPause = true
 									else
-									tweenPause = false
+									NeedAttacking = true
 								end
 							end
 						end
@@ -5500,9 +5487,9 @@ spawn(function()
                                     end
                                     NeedAttacking = true
                                 until not getgenv().AutoKata or not getgenv().AcceptQuest or not v.Parent or v.Humanoid.Health <= 0
-                                tweenPause = true
+                                NeedAttacking = false
                             else
-                                tweenPause = false
+                                NeedAttacking = true
                                 wait(2)
                             end
                         end
@@ -5544,7 +5531,7 @@ spawn(function()
                                               game:GetService("ReplicatedStorage"):FindFirstChild("Cake Prince") or
                                               not v.Parent or v.Humanoid.Health <= 0 or
                                               not game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible
-                                        tweenPause = true
+                                        NeedAttacking = false
                                     else
                                         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
                                     end
