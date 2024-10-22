@@ -2317,10 +2317,6 @@ spawn(function()
                                         until not getgenv().AutoElitehunter or 
                                               enemy.Humanoid.Health <= 0 or 
                                               not enemy.Parent
-                                        
-                                        NeedAttacking = false
-                                    else
-                                        tweenPause = true
                                     end
                                 end
                             end
@@ -2406,9 +2402,6 @@ spawn(function()
                                     NeedAttacking = true
                                 end)
                             until getgenv().AutoRipChan == false or L_547_forvar1.Humanoid.Health <= 0
-                           NeedAttacking = true
-                        else
-                            NeedAttacking = false
                         end
                     end
                 elseif game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("God's Chalice") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("God's Chalice") then
@@ -2475,9 +2468,6 @@ spawn(function()
                                 game:GetService("VirtualUser"):Button1Down(Vector2.new(1280, 670))
                                 enemy.HumanoidRootPart.Transparency = 1
                             until enemy.Humanoid.Health <= 0 or not getgenv().AutoFarmBossHallow
-                           NeedAttacking = false
-                        else
-                            NeedAttacking = true
                         end
                     end
                 elseif game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Hallow Essence") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Hallow Essence") then
@@ -5286,9 +5276,6 @@ spawn(function()
                                 NeedAttacking = true
                                 TP(enemy.HumanoidRootPart.CFrame * CFrame.new(4, 25, 10))
                             until not getgenv().NearMob or not enemy.Parent or enemy.Humanoid.Health <= 0
-                            NeedAttacking = false
-                        else
-                            NeedAttacking = true
                         end
                     end
                 end
@@ -5391,9 +5378,6 @@ spawn(function()
 									end
 									NeedAttacking = true
 								until not getgenv().AutoKata or not L_802_forvar1.Parent or L_802_forvar1.Humanoid.Health <= 0
-								NeedAttacking = false
-								else
-								NeedAttacking = true
 								wait(2) 
 							end
 						end
@@ -5487,9 +5471,6 @@ spawn(function()
                                     end
                                     NeedAttacking = true
                                 until not getgenv().AutoKata or not getgenv().AcceptQuest or not v.Parent or v.Humanoid.Health <= 0
-                                NeedAttacking = false
-                            else
-                                NeedAttacking = true
                                 wait(2)
                             end
                         end
