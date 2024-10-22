@@ -5233,34 +5233,6 @@ end
         return name
     end
 
-    function Find_Mon_Spawn(Name_Mon)
-        local Mon = type(Name_Mon) == "string" and {Name_Mon} or Name_Mon
-        local matchingSpawns = {}
-
-        for _, Mob in pairs(Mon) do
-            for _, spawn in pairs(workspace["_WorldOrigin"].EnemySpawns:GetChildren()) do
-                if spawn.Name:match("^" .. Mob) then
-                    table.insert(matchingSpawns, spawn)
-                end
-            end
-        end
-
-        return #matchingSpawns > 0 and matchingSpawns or nil
-    end
-
-    function Go_To_Mon_Spawn(Name_Mon,State_Ment)
-        local Enemy_Spawn = Find_Mon_Spawn(Name_Mon)
-        if not Enemy_Spawn then return end
-            for _, spawn in pairs(Enemy_Spawn) do
-                if not DetectMob(Name_Mon) and not State_Ment() then
-                    repeat wait()
-                        TP(spawn.CFrame * CFrame.new(0, 35, 0))
-                    until dist(spawn.Position) < 50 or DetectMob(MobLevelFarm) or State_Ment()
-                end
-            end
-            wait(2)
-        end
-
     spawn(
         function()
             while wait() do
@@ -5276,7 +5248,7 @@ end
                                 getquest()
                             else
                                 if not DetectMob(MobLevelFarm) then
-                                    Go_To_Mon_Spawn(MobLevelFarm,function()
+                                    TeleportSpawnMob(MobLevelFarm)
                                         return not getgenv().NormalFarm
                                     end)
                                 else
