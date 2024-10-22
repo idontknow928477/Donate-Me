@@ -4918,6 +4918,346 @@ task.spawn(
 	end
 end
 )
+local L_69_ = Tabs.Main:AddToggle("Autolivi", {
+	Title = "Auto Farm Level",
+	Description = "turn on and go sleep wating level max",
+	Default = false
+})
+L_69_:OnChanged(function(L_692_arg0)
+	getgenv().NormalFarm = L_692_arg0
+end)
+function sizepart(L_693_arg0)
+	L_693_arg0.HumanoidRootPart.CanCollide = false
+	if syn or Fluxus then
+		L_693_arg0.Humanoid:ChangeState(11)
+	else
+		for L_694_forvar0, L_695_forvar1 in next, L_693_arg0:GetDescendants() do
+			if (L_695_forvar1:IsA("Part") or L_695_forvar1:IsA("MeshPart")) and not string.find(L_693_arg0.Name, "Leg") and L_695_forvar1.CanCollide then
+				L_695_forvar1.CanCollide = false
+			end
+		end
+	end
+	if not L_693_arg0.HumanoidRootPart:FindFirstChild("vando") then
+		local L_696_ = Instance.new("BodyVelocity")
+		L_696_.Parent = L_693_arg0
+		L_696_.Name = "vando"
+		L_696_.MaxForce = Vector3.new(100000, 100000, 100000)
+		L_696_.Velocity = Vector3.new(0, 0, 0)
+	end
+end
+game:GetService("RunService").RenderStepped:connect(function()
+	sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+end)
+
+function CFrameQuest()
+	getgenv().QuestPoses = {}
+	for L_702_forvar0, L_703_forvar1 in pairs(getnilinstances()) do
+		if L_703_forvar1:IsA("Model") and L_703_forvar1:FindFirstChild("Head") and L_703_forvar1.Head:FindFirstChild("QuestBBG") and L_703_forvar1.Head.QuestBBG.Title.Text == "QUEST" then
+			getgenv().QuestPoses[L_703_forvar1.Name] = L_703_forvar1.Head.CFrame * CFrame.new(0, -2, 2)
+		end
+	end
+	for L_704_forvar0, L_705_forvar1 in pairs(game.Workspace.NPCs:GetDescendants()) do
+		if L_705_forvar1.Name == "QuestBBG" and L_705_forvar1.Title.Text == "QUEST" then
+			getgenv().QuestPoses[L_705_forvar1.Parent.Parent.Name] = L_705_forvar1.Parent.Parent.Head.CFrame * CFrame.new(0, -2, 2)
+		end
+	end
+	getgenv().DialoguesList = {}
+	for L_706_forvar0, L_707_forvar1 in pairs(require(game.ReplicatedStorage.DialoguesList)) do
+		getgenv().DialoguesList[L_707_forvar1] = L_706_forvar0
+	end
+	local L_697_ = getscriptclosure(game:GetService("Players").LocalPlayer.PlayerScripts.NPC)
+	local L_698_ = {}
+	for L_708_forvar0, L_709_forvar1 in pairs(debug.getprotos(L_697_)) do
+		if # debug.getconstants(L_709_forvar1) == 1 then
+			table.insert(L_698_, debug.getconstant(L_709_forvar1, 1))
+		end
+	end
+	local L_699_ = false
+	local L_700_ = {}
+	for L_710_forvar0, L_711_forvar1 in pairs(debug.getconstants(L_697_)) do
+		if type(L_711_forvar1) == "string" then
+			if L_711_forvar1 == "Players" then
+				L_699_ = false
+			end
+			if not L_699_ then
+				if L_711_forvar1 == "Blox Fruit Dealer" then
+					L_699_ = true
+				end
+			else
+			end
+			if L_699_ then
+				table.insert(L_700_, L_711_forvar1)
+			end
+		end
+	end
+	local L_701_ = {}
+	getgenv().questpoint = {}
+	for L_712_forvar0, L_713_forvar1 in pairs(L_700_) do
+		if QuestPoses[L_713_forvar1] then
+			L_701_[L_698_[L_712_forvar0]] = L_700_[L_712_forvar0]
+		end
+	end
+	for L_714_forvar0, L_715_forvar1 in next, L_701_ do
+		getgenv().questpoint[L_714_forvar0] = QuestPoses[L_715_forvar1]
+	end
+	getgenv().questpoint["SkyExp1Quest"] = CFrame.new(- 7857.28516, 5544.34033, - 382.321503, - 0.422592998, 0, 0.906319618, 0, 1, 0, - 0.906319618, 0, - 0.422592998)
+end
+CFrameQuest()
+local L_70_ = {
+	"BartiloQuest",
+	"Trainees",
+	"MarineQuest",
+	"CitizenQuest"
+}
+local L_71_ = {}
+getgenv().mob = ''
+getgenv().mobv = ""
+local L_72_ = require(game.ReplicatedStorage.Quests)
+local function L_73_func()
+	local L_716_ = L_25_.Data.Level.Value
+	local L_717_ = 0
+	if L_716_ >= 1450 and game.PlaceId == 4442272183 then
+		getgenv().mobv = "Water Fighter"
+		getgenv().mobvv = "ForgottenQuest"
+		getgenv().mobvvv = 2
+	elseif L_716_ >= 700 and game.PlaceId == 2753915549 then
+		getgenv().mobv = "Galley Captain"
+		getgenv().mobvv = "FountainQuest"
+		getgenv().mobvvv = 2
+	else
+		for L_718_forvar0, L_719_forvar1 in pairs(L_72_) do
+			for L_720_forvar0, L_721_forvar1 in pairs(L_719_forvar1) do
+				local L_722_ = L_721_forvar1.LevelReq
+				for L_723_forvar0, L_724_forvar1 in pairs(L_721_forvar1.Task) do
+					if L_716_ >= L_722_ and L_722_ >= L_717_ and L_721_forvar1.Task[L_723_forvar0] > 1 and not table.find(L_70_, tostring(L_718_forvar0)) then
+						L_717_ = L_722_
+						getgenv().mobv = tostring(L_723_forvar0)
+						getgenv().mobvv = L_718_forvar0
+						getgenv().mobvvv = L_720_forvar0
+					end
+				end
+			end
+		end
+	end
+end
+function checkdoublquest()
+	local L_725_ = {}
+	for L_726_forvar0, L_727_forvar1 in pairs(L_72_) do
+		for L_728_forvar0, L_729_forvar1 in pairs(L_727_forvar1) do
+			local L_730_ = L_729_forvar1.LevelReq
+			for L_731_forvar0, L_732_forvar1 in pairs(L_729_forvar1.Task) do
+				if L_731_forvar0 == getgenv().mobv then
+					for L_733_forvar0, L_734_forvar1 in next, L_727_forvar1 do
+						if L_734_forvar1.LevelReq <= game.Players.LocalPlayer.Data.Level.Value and L_734_forvar1.Name ~= "Town Raid" then
+							for L_735_forvar0, L_736_forvar1 in next, L_734_forvar1.Task do
+								if L_736_forvar1 > 1 then
+									table.insert(L_725_, L_735_forvar0)
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	return L_725_ 
+end
+local L_74_ = require(game.ReplicatedStorage:WaitForChild("GuideModule"));
+function checkquestdata()
+	for L_737_forvar0, L_738_forvar1 in next, L_74_.Data do
+		if L_737_forvar0 == "QuestData" then
+			return true
+		end
+	end
+	return false
+end
+function checknamedoublquest()
+	local L_739_
+	if checkquestdata() then
+		for L_740_forvar0, L_741_forvar1 in next, L_74_.Data.QuestData.Task do
+			L_739_ = L_740_forvar0
+		end
+	end
+	return L_739_ 
+end
+function doublequestdeptrai()
+	L_73_func()
+	local L_742_ = {}
+	if getgenv().DoubleQuest and checkquestdata() and checknamedoublquest() == getgenv().mobv and # checkdoublquest() >= 2 then
+		for L_743_forvar0, L_744_forvar1 in pairs(L_72_) do
+			for L_745_forvar0, L_746_forvar1 in pairs(L_744_forvar1) do
+				for L_747_forvar0, L_748_forvar1 in pairs(L_746_forvar1.Task) do
+					if tostring(L_747_forvar0) == getgenv().mobv then
+						for L_749_forvar0, L_750_forvar1 in next, L_744_forvar1 do
+							for L_751_forvar0, L_752_forvar1 in next, L_750_forvar1.Task do
+								if L_751_forvar0 ~= getgenv().mobv and L_752_forvar1 > 1 then
+									L_742_["Name"] = tostring(L_751_forvar0)
+									L_742_["NameQuest"] = L_743_forvar0
+									L_742_["ID"] = L_749_forvar0
+									return L_742_
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	else
+		L_742_["Name"] = getgenv().mobv
+		L_742_["NameQuest"] = getgenv().mobvv
+		L_742_["ID"] = getgenv().mobvvv
+		return L_742_
+	end
+end
+function teleportquestdeptrai(L_753_arg0)
+	TP(getgenv().questpoint[tostring(L_753_arg0)] * CFrame.new(0, 4, 2), true)
+end
+function getquest()
+	if not getgenv().questpoint[tostring(doublequestdeptrai().NameQuest)] then
+		CFrameQuest()
+		return
+	end
+	if (getgenv().questpoint[tostring(doublequestdeptrai().NameQuest)].Position - L_25_.Character.HumanoidRootPart.Position).magnitude <= 8 then
+		task.wait(1)
+		if L_25_.Character.Humanoid.Health > 0 then
+			L_10_:InvokeServer("StartQuest", tostring(doublequestdeptrai().NameQuest), doublequestdeptrai().ID)
+		end
+	else
+		teleportquestdeptrai(doublequestdeptrai().NameQuest)
+	end
+end
+
+local L_75_ = {}
+
+function DetectPartSpawnMob(L_754_arg0)
+	local L_755_
+	if string.find(L_754_arg0, "Lv.") then
+		L_755_ = L_754_arg0:gsub(" %pLv. %d+%p", "")
+	end
+	for L_756_forvar0, L_757_forvar1 in pairs(game:GetService("Workspace")["_WorldOrigin"].EnemySpawns:GetChildren()) do
+		local L_758_
+		if string.find(L_757_forvar1.Name, "Lv.") then
+			L_758_ = L_757_forvar1.Name:gsub(" %pLv. %d+%p", "")
+		end
+		if L_757_forvar1:IsA("Part") and ((L_758_ and L_758_ == L_754_arg0) or L_754_arg0 == L_757_forvar1.Name or (L_755_ and L_757_forvar1.Name == L_755_)) then
+			return L_757_forvar1
+		end
+	end
+	for L_759_forvar0, L_760_forvar1 in pairs(getnilinstances()) do
+		local L_761_
+		if string.find(L_760_forvar1.Name, "Lv.") then
+			L_761_ = L_760_forvar1.Name:gsub(" %pLv. %d+%p", "")
+		end
+		if L_760_forvar1:IsA("Part") and ((L_761_ and L_761_ == L_754_arg0) or L_754_arg0 == L_760_forvar1.Name or (L_755_ and L_760_forvar1.Name == L_755_)) then
+			return L_760_forvar1
+		end
+	end
+end
+
+function TeleportSpawnMob(L_762_arg0, L_763_arg1)
+	if typeof(L_762_arg0) == "table" then
+		if # L_75_ >= 4 then
+			L_75_ = {}
+			return
+		end
+		local L_764_
+		for L_765_forvar0, L_766_forvar1 in next, L_762_arg0 do
+			if not table.find(L_75_, L_766_forvar1) then
+				L_764_ = DetectPartSpawnMob(L_766_forvar1)
+				repeat
+					task.wait()
+					TP(L_764_.CFrame * Pos)
+				until (L_764_.Position - L_25_.Character.HumanoidRootPart.Position).Magnitude <= 100 or DetectMob(L_762_arg0) or not L_763_arg1
+			end
+		end
+	else
+		GetPart = DetectPartSpawnMob(L_762_arg0)
+		TP(GetPart.CFrame * Pos)
+	end
+end
+function DetectMob(L_767_arg0)
+	local L_768_ = math.huge
+	local L_769_
+	for L_770_forvar0, L_771_forvar1 in pairs(game.Workspace.Enemies:GetChildren()) do
+		local L_772_ = L_771_forvar1.Name:gsub(" %pLv. %d+%p", "")
+		if ((typeof(L_767_arg0) == "table" and (table.find(L_767_arg0, L_771_forvar1.Name) or table.find(L_767_arg0, L_772_))) or (L_771_forvar1.Name == L_767_arg0 or L_767_arg0 == L_772_)) and L_771_forvar1:IsA('Model') and L_771_forvar1:FindFirstChild('Humanoid') and L_771_forvar1.Humanoid.Health > 0 and L_771_forvar1:FindFirstChild('HumanoidRootPart') then
+			local L_773_ = (L_771_forvar1.HumanoidRootPart.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+			if L_773_ < L_768_ then
+				L_768_ = L_773_
+				L_769_ = L_771_forvar1
+			end
+		end
+	end
+	return L_769_
+end
+
+function Find_Mon_Spawn(L_774_arg0)
+	local L_775_ = type(L_774_arg0) == "string" and {
+		L_774_arg0
+	} or L_774_arg0
+	local L_776_ = {}
+	for L_777_forvar0, L_778_forvar1 in pairs(L_775_) do
+		for L_779_forvar0, L_780_forvar1 in pairs(workspace["_WorldOrigin"].EnemySpawns:GetChildren()) do
+			if L_780_forvar1.Name:match("^" .. L_778_forvar1) then
+				table.insert(L_776_, L_780_forvar1)
+			end
+		end
+	end
+	return # L_776_ > 0 and L_776_ or nil
+end
+
+function Go_To_Mon_Spawn(L_781_arg0, L_782_arg1)
+	local L_783_ = Find_Mon_Spawn(L_781_arg0)
+	if not L_783_ then
+		return
+	end
+	for L_784_forvar0, L_785_forvar1 in pairs(L_783_) do
+		if not DetectMob(L_781_arg0) and not L_782_arg1() then
+			repeat
+				wait()
+				TP(L_785_forvar1.CFrame * CFrame.new(0, 35, 0))
+			until dist(L_785_forvar1.Position) < 50 or DetectMob(MobLevelFarm) or L_782_arg1()
+		end
+	end
+	wait(2)
+end
+
+spawn(
+    function()
+	while wait() do
+		pcall(
+                function()
+			if getgenv().NormalFarm then
+				local L_786_
+				local L_787_
+				local L_788_
+				local L_789_ = 2
+				local L_790_ = checknamedoublquest() or ""
+				if not L_25_.PlayerGui.Main:FindFirstChild("Quest").Visible then
+					getquest()
+				else
+					if not DetectMob(L_790_) then
+						Go_To_Mon_Spawn(L_790_, function()
+							return not getgenv().NormalFarm
+						end)
+					else
+						local L_791_ = DetectMob(L_790_)
+						repeat
+							wait()
+							sizepart(L_791_)
+							TP(L_791_.HumanoidRootPart.CFrame * Pos)
+							NeedAttacking = true
+							MonFarm = L_791_.Name
+							getgenv().PosMon = L_791_.HumanoidRootPart.CFrame
+							StartMagnet = true
+							EquipWeapon(Selected_Weapons)
+						until not L_791_ or not L_791_.Parent or L_791_.Humanoid.Health == 0 or not getgenv().NormalFarm
+					end
+				end
+			end
+		end)
+	end
+end)
 
 local L_76_ = Tabs.Main:AddToggle("farm_near", {
 	Title = "Farm Near Mob",
